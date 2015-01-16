@@ -1,0 +1,34 @@
+<% if @vote.valid? %>
+  var post_votes = $('<%= "#post-#{@post.id}-votes" %>');
+  post_votes.html('<%= @post.total_votes %> votes');
+  post_votes.closest('.post-block').attr('data-votes', <%= @post.total_votes %>);
+
+  var posts_block = $('#posts-block');
+  var posts = posts_block.find('.post-block');
+
+  posts.sort(function(a,b){
+    var av = a.getAttribute('data-votes'),
+        bv = b.getAttribute('data-votes');
+
+    if(av > bv) {
+      return -1;
+    }
+    if(av < bv) {
+      return 1;
+    }
+
+    var aid = a.getAttribute('data-voteable-id'),
+        bid = b.getAttribute('data-voteable-id');
+
+    if(aid > bid) {
+      return -1;
+    }
+    if(aid < bid) {
+      return 1;
+    }
+
+    return 0;
+  });
+
+  posts.detach().appendTo(posts_block);
+<% end %>

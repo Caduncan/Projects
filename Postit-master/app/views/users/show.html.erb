@@ -1,0 +1,29 @@
+<%= render 'shared/content_title', title: "Profile: #{@user.username}" %>
+
+<div class="well">
+  <dl class="dl-horizontal">
+    <dt>Username:</dt><dd><%= @user.username %></dd>
+    <dt>Time zone:</dt><dd><%= @user.time_zone %></dd>
+  </dl>
+</div>
+
+<h5><%= "#{@user.username}'s Activity" %></h5>
+
+<ul class="nav nav-tabs">
+  <li <%= "class=active" if @show_post_tab %> >
+    <%= link_to "Posts (#{@user.posts.size})", user_path(@user) %>
+  </li>
+  <li <%= "class=active" unless @show_post_tab %> >
+    <%= link_to "Comments (#{@user.comments.size})", user_path(@user, tab: :comments) %>
+  </li>
+</ul>
+
+<% if @show_post_tab %>
+  <div id="posts-block">
+    <%= render sort_voteable(@user.posts) %>
+  </div>
+<% else %>
+  <div id="comments-block">
+    <%= render partial: 'comments/comment', collection: sort_voteable(@user.comments), locals: {show_post_name: true} %>
+  </div>
+<% end %>

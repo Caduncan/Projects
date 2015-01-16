@@ -1,0 +1,32 @@
+<div class="row post-block" data-votes=<%= post.total_votes %> data-voteable-id=<%=post.id %>>
+  <div class="span0 well text-center">
+    <% if logged_in? %>
+      <%= link_to vote_post_path(post, vote: true), method: :post, remote: true do %>
+        <%= content_tag(:i, '', class: 'icon-arrow-up') %>
+      <% end %>
+      <br/>
+    <% end %>
+    <div id=<%= "post-#{post.id}-votes" %>>
+      <%= post.total_votes %> votes
+    </div>
+    <% if logged_in? %>
+      <%= link_to vote_post_path(post, vote: false), method: :post, remote: true do %>
+        <%= content_tag(:i, '', class: 'icon-arrow-down') %>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="span8 well">
+    <%= render post.categories %>
+    <h4><%= link_to post.title, fix_url(post.url), target: '_blank' %></h4>
+    <p><%= post.description %></p>
+    <p>
+      <span class="quiet">posed by</span> <%= link_to post.creator.username, user_path(post.creator) %>
+      <small><%= custom_time_ago_in_words(post.created_at) %></small>
+    </p>
+    <small>
+      <span>
+        <%= link_to("#{post.comments.size} comments", post_path(post) )%>
+      </span>
+    </small>
+  </div>
+</div>

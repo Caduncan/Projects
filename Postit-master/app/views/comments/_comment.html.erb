@@ -1,0 +1,27 @@
+<div class="row comment-block" data-votes=<%= comment.total_votes %> data-voteable-id=<%=comment.id %>>
+  <div class="span0 well text-center">
+    <% if logged_in? %>
+      <%= link_to vote_post_comment_path(comment.post, comment, vote: true), method: :post, remote: true do %>
+        <%= content_tag(:i, '', class: 'icon-arrow-up') %>
+      <% end %>
+      <br/>
+    <% end %>
+    <div id=<%= "comment-#{comment.id}-votes" %>>
+      <%= comment.total_votes %> votes
+    </div>
+    <% if logged_in? %>
+      <%= link_to vote_post_comment_path(comment.post, comment, vote: false), method: :post, remote: true do %>
+        <%= content_tag(:i, '', class: 'icon-arrow-down') %>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="well span8">
+    <em>"<%= comment.body %>"</em>
+    <% if show_post_name %>
+     on <%= link_to comment.post.title, post_path(comment.post) %>
+    <% end %>
+    <br>
+    <span class="quiet">by</span> <%= link_to comment.creator.username, user_path(comment.creator) %>
+    <small><%= custom_time_ago_in_words(comment.created_at) %></small>
+  </div>
+</div>
